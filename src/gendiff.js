@@ -1,23 +1,27 @@
 import _ from 'lodash';
+import parse from './parsers.js';
 
-const genDiff = (objOne, objTwo) => {
-  const changes = Object.keys(objOne).reduce((acc, key) => {
-    if (!Object.hasOwn(objTwo, key)) {
-      acc.push({ diff: '-', key, value: objOne[key] });
-    } else if (objOne[key] === objTwo[key]) {
-      acc.push({ diff: ' ', key, value: objOne[key] });
+const genDiff = (file1, file2) => {
+  const objectOne = parse(file1);
+  const objectTwo = parse(file2);
+
+  const changes = Object.keys(objectOne).reduce((acc, key) => {
+    if (!Object.hasOwn(objectTwo, key)) {
+      acc.push({ diff: '-', key, value: objectOne[key] });
+    } else if (objectOne[key] === objectTwo[key]) {
+      acc.push({ diff: ' ', key, value: objectOne[key] });
     } else {
-      acc.push({ diff: '-', key, value: objOne[key] });
-      acc.push({ diff: '+', key, value: objTwo[key] });
+      acc.push({ diff: '-', key, value: objectOne[key] });
+      acc.push({ diff: '+', key, value: objectTwo[key] });
     }
 
     return acc;
   }, []);
 
-  const newKeys = _.difference(Object.keys(objTwo), Object.keys(objOne));
+  const newKeys = _.difference(Object.keys(objectTwo), Object.keys(objectOne));
 
   newKeys.reduce((acc, key) => {
-    acc.push({ diff: '+', key, value: objTwo[key] });
+    acc.push({ diff: '+', key, value: objectTwo[key] });
     return acc;
   }, changes);
 
