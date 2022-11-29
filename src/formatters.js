@@ -17,7 +17,6 @@ const stylishFormatter = (changes, depth = 0) => {
   const indent = '  ';
 
   const content = [];
-  // for (const key of Object.keys(changes).sort()) {
   Object.keys(changes).sort().forEach((key) => {
     changes[key].forEach((change) => {
       const value = _.isObject(change.value) ? stylishFormatter(change.value, depth + 1) : change.value;
