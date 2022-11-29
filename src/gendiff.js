@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import parse from './parsers.js';
-import format from './formatters.js';
+import format from './formatters/index.js';
 
 const getChanges = (objectOne, objectTwo) => {
   const addChange = (changeHash, key, change) => {
