@@ -11,10 +11,10 @@ program
   .version('0.1.0');
 
 program
-  .option('-f, --format <type>', 'output format');
+  .option('-f, --format <formatName>', 'output format', 'stylish');
 
 program.parse();
 
 const [fileOne, fileTwo] = program.args;
 
-console.log(genDiff(fileOne, fileTwo));
+console.log(genDiff(fileOne, fileTwo, program.opts().formatName));

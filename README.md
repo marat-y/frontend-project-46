@@ -5,5 +5,6 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/25013e623f19d88ff8f1/test_coverage)](https://codeclimate.com/github/marat-y/frontend-project-46/test_coverage)
 
 ## Usage
-[JSON](https://asciinema.org/a/532434)
-[YML](https://asciinema.org/a/535609)
+- [flat JSON](https://asciinema.org/a/532434)
+- [flat YML](https://asciinema.org/a/535609)
+- [both nested](https://asciinema.org/a/541216)
