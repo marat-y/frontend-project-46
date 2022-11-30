@@ -8,9 +8,9 @@ const getPropertyPath = (property, parents) => [...parents, property].join('.');
 
 const getPreparedValue = (value) => {
   if (_.isObject(value)) return '[complex value]';
-  if ([null, true, false].includes(value)) return value;
+  if (typeof value === 'string') return `'${value}'`;
 
-  return `'${value}'`;
+  return value;
 };
 
 const isUpdated = (changes) => changes.length === 2;
