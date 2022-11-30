@@ -33,3 +33,13 @@ test('plain YML', () => {
   const expectedResult = readFile('plainResult.txt').trim();
   expect(genDiff('__fixtures__/file1.yml', '__fixtures__/file2.yml', 'plain')).toEqual(expectedResult);
 });
+
+test('json JSON', () => {
+  const expectedResult = readFile('jsonResult.txt').trim();
+  expect(genDiff('__fixtures__/file1.json', '__fixtures__/file2.json', 'json')).toEqual(expectedResult);
+});
+
+test('json YML', () => {
+  const expectedResult = readFile('jsonResult.txt').trim();
+  expect(genDiff('__fixtures__/file1.yml', '__fixtures__/file2.yml', 'json')).toEqual(expectedResult);
+});

@@ -9,3 +9,4 @@
 - [flat YML](https://asciinema.org/a/535609)
 - [stylish nested](https://asciinema.org/a/541216)
 - [plain nested](https://asciinema.org/a/541508)
+- [json nested](https://asciinema.org/a/541517)
