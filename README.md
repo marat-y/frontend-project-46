@@ -7,4 +7,5 @@
 ## Usage
 - [flat JSON](https://asciinema.org/a/532434)
 - [flat YML](https://asciinema.org/a/535609)
-- [both nested](https://asciinema.org/a/541216)
+- [stylish nested](https://asciinema.org/a/541216)
+- [plain nested](https://asciinema.org/a/541508)

@@ -6,21 +6,39 @@ const isRemoved = (changes) => changes.length === 1 && changes[0].status === 're
 
 const getPropertyPath = (property, parents) => [...parents, property].join('.');
 
-const getPreparedValue = (value) => (_.isObject(value) ? '[complex value]' : value);
+const getPreparedValue = (value) => {
+  if (_.isObject(value)) return '[complex value]';
+  if ([null, true, false].includes(value)) return value;
 
-const formatter = (changes, parents = []) => {
+  return `'${value}'`;
+};
+
+const isUpdated = (changes) => changes.length === 2;
+
+const getUpdatedFrom = (changes) => getPreparedValue(changes.filter((change) => isRemoved([change]))[0].value);
+
+const getUpdatedTo = (changes) => getPreparedValue(changes.filter((change) => isAdded([change]))[0].value);
+
+const getLines = (changes, parents = []) => {
   const content = [];
   Object.keys(changes).sort().forEach((key) => {
-    if (isAdded(changes[key])) {
-      content.push(`Property ${getPropertyPath(key, parents)} was added with value: ${getPreparedValue(changes[key].value)}`);
-    } else if (isRemoved(changes[key])) {
-      content.push(`Property ${getPropertyPath(key, parents)} was removed`);
-    } else if (isUpdated(changes[key])) {
-      content.push(`Property ${getPropertyPath(key, parents)} updated. From '' to 'so much'`);
+    const propertyChanges = changes[key];
+    if (isAdded(propertyChanges)) {
+      content.push(`Property '${getPropertyPath(key, parents)}' was added with value: ${getPreparedValue(changes[key][0].value)}`);
+    } else if (isRemoved(propertyChanges)) {
+      content.push(`Property '${getPropertyPath(key, parents)}' was removed`);
+    } else if (isUpdated(propertyChanges)) {
+      content.push(`Property '${getPropertyPath(key, parents)}' was updated. From ${getUpdatedFrom(propertyChanges)} to ${getUpdatedTo(propertyChanges)}`);
+    } else {
+      if (!_.isObject(propertyChanges[0].value)) return;
+
+      content.push(...getLines(propertyChanges[0].value, [...parents, key]));
     }
   });
 
-  return content.join('\n');
+  return content;
 };
 
-export default formatter;
+const format = (changes) => getLines(changes).join('\n');
+
+export default format;

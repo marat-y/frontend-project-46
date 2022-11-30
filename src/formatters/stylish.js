@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const formatter = (changes, depth = 0) => {
+const format = (changes, depth = 0) => {
   const diffIcon = (status) => {
     switch (status) {
       case 'no change':
@@ -19,7 +19,7 @@ const formatter = (changes, depth = 0) => {
   const content = [];
   Object.keys(changes).sort().forEach((key) => {
     changes[key].forEach((change) => {
-      const value = _.isObject(change.value) ? formatter(change.value, depth + 1) : change.value;
+      const value = _.isObject(change.value) ? format(change.value, depth + 1) : change.value;
       const contentLineIndent = indent.repeat(1 + (depth * 2));
       content.push(`${contentLineIndent}${diffIcon(change.status)} ${key}: ${value}`);
     });
@@ -28,4 +28,4 @@ const formatter = (changes, depth = 0) => {
   return ['{', content.join('\n'), `${indent.repeat(depth * 2)}}`].join('\n');
 };
 
-export default formatter;
+export default format;
