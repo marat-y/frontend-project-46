@@ -15,6 +15,7 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
+  "main": "bin/gendiff.js",
   "bugs": {
     "url": "https://github.com/marat-y/frontend-project-46/issues"
   },
