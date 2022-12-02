@@ -13,5 +13,4 @@ rules:
     - ignorePackages
     - js: always
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
-  max-len: ["error", {"code": 160}]
   no-param-reassign: off

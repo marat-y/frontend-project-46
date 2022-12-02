@@ -15,9 +15,15 @@ const getPreparedValue = (value) => {
 
 const isUpdated = (changes) => changes.length === 2;
 
-const getUpdatedFrom = (changes) => getPreparedValue(changes.filter((change) => isRemoved([change]))[0].value);
+const getUpdatedFrom = (changes) => {
+  const updatedFromValue = changes.filter((change) => isRemoved([change]))[0].value;
+  return getPreparedValue(updatedFromValue);
+};
 
-const getUpdatedTo = (changes) => getPreparedValue(changes.filter((change) => isAdded([change]))[0].value);
+const getUpdatedTo = (changes) => {
+  const updatedToValue = changes.filter((change) => isAdded([change]))[0].value;
+  return getPreparedValue(updatedToValue);
+};
 
 const getLines = (changes, parents = []) => {
   const content = [];
