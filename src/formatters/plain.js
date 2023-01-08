@@ -26,21 +26,30 @@ const getUpdatedTo = (changes) => {
 };
 
 const getLines = (changes, parents = []) => {
-  const content = [];
-  Object.keys(changes).sort().forEach((key) => {
+  const content = _.sortBy(Object.keys(changes)).reduce((acc, key) => {
     const propertyChanges = changes[key];
     if (isAdded(propertyChanges)) {
-      content.push(`Property '${getPropertyPath(key, parents)}' was added with value: ${getPreparedValue(changes[key][0].value)}`);
-    } else if (isRemoved(propertyChanges)) {
-      content.push(`Property '${getPropertyPath(key, parents)}' was removed`);
-    } else if (isUpdated(propertyChanges)) {
-      content.push(`Property '${getPropertyPath(key, parents)}' was updated. From ${getUpdatedFrom(propertyChanges)} to ${getUpdatedTo(propertyChanges)}`);
-    } else {
-      if (!_.isObject(propertyChanges[0].value)) return;
+      const change = `Property '${getPropertyPath(key, parents)}' was added with value: ${getPreparedValue(changes[key][0].value)}`;
 
-      content.push(...getLines(propertyChanges[0].value, [...parents, key]));
+      return [...acc, change];
     }
-  });
+
+    if (isRemoved(propertyChanges)) {
+      const change = `Property '${getPropertyPath(key, parents)}' was removed`;
+
+      return [...acc, change];
+    }
+
+    if (isUpdated(propertyChanges)) {
+      const change = `Property '${getPropertyPath(key, parents)}' was updated. From ${getUpdatedFrom(propertyChanges)} to ${getUpdatedTo(propertyChanges)}`;
+
+      return [...acc, change];
+    }
+
+    if (!_.isObject(propertyChanges[0].value)) return acc;
+
+    return [...acc, ...getLines(propertyChanges[0].value, [...parents, key])];
+  }, []);
 
   return content;
 };

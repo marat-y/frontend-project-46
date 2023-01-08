@@ -5,9 +5,9 @@ import format from './formatters/index.js';
 const getChanges = (objectOne, objectTwo) => {
   const addChange = (changeHash, key, change) => {
     if (Object.hasOwn(changeHash, key)) {
-      changeHash[key].push(change);
+      changeHash[key].push(change); // eslint-disable-line fp/no-mutating-methods
     } else {
-      changeHash[key] = [change];
+      changeHash[key] = [change]; // eslint-disable-line fp/no-mutation, no-param-reassign
     }
   };
 
