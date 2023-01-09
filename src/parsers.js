@@ -1,15 +1,10 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import { cwd } from 'node:process';
-import _ from 'lodash';
 import yaml from 'js-yaml';
 
 const jsonParser = (json) => JSON.parse(json);
 
 const ymlParser = (yml) => yaml.load(yml);
 
-const getParser = (fileStr) => {
-  const extension = _.last(fileStr.split('.'));
+const getParser = (extension) => {
   switch (extension) {
     case 'json':
       return jsonParser;
@@ -22,10 +17,9 @@ const getParser = (fileStr) => {
   }
 };
 
-const parse = (file) => {
-  const filePath = path.resolve(cwd(), file);
-  const fileToObjectFunction = getParser(file);
-  return fileToObjectFunction(fs.readFileSync(filePath, 'utf8'));
+const parse = (content, extension) => {
+  const fileToObjectFunction = getParser(extension);
+  return fileToObjectFunction(content);
 };
 
 export default parse;
