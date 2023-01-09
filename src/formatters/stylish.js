@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const diffIcon = (status) => {
   switch (status) {
-    case 'no change':
+    case 'unchanged':
       return ' ';
     case 'added':
       return '+';

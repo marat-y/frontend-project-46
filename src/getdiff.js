@@ -19,9 +19,9 @@ const getDiff = (objectOne, objectTwo) => {
     if (!Object.hasOwn(objectTwo, key)) {
       addChange(acc, key, { status: 'removed', value: prepareValue(objectOne[key]) });
     } else if (_.isObject(objectOne[key]) && _.isObject(objectTwo[key])) {
-      addChange(acc, key, { status: 'no change', value: getDiff(objectOne[key], objectTwo[key]) });
+      addChange(acc, key, { status: 'unchanged', value: getDiff(objectOne[key], objectTwo[key]) });
     } else if (objectOne[key] === objectTwo[key]) {
-      addChange(acc, key, { status: 'no change', value: prepareValue(objectOne[key]) });
+      addChange(acc, key, { status: 'unchanged', value: prepareValue(objectOne[key]) });
     } else {
       addChange(acc, key, { status: 'removed', value: prepareValue(objectOne[key]) });
       addChange(acc, key, { status: 'added', value: prepareValue(objectTwo[key]) });
