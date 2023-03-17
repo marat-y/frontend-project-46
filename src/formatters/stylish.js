@@ -1,34 +1,50 @@
 import _ from 'lodash';
 
-const diffIcon = (status) => {
-  switch (status) {
-    case 'unchanged':
-      return ' ';
-    case 'added':
-      return '+';
-    case 'removed':
-      return '-';
-    default:
-      throw new Error(`"${status}" change status is not supported`);
-  }
+const indentSymbol = ' ';
+
+const lineIndent = (depth) => {
+  const repeatTimes = depth * 4 - 2;
+  return indentSymbol.repeat(Math.sign(repeatTimes) === -1 ? 0 : repeatTimes);
 };
 
-const indent = '  ';
+const stringify = (depth, icon, key, value) => {
+  // eslint-disable-next-line fp/no-let
+  let newValue;
+  if (_.isPlainObject(value)) {
+    const content = Object.keys(value).map((valueKey) => stringify(depth + 1, ' ', valueKey, value[valueKey]));
+    // eslint-disable-next-line fp/no-mutation
+    newValue = ['{', content.join('\n'), `${indentSymbol.repeat(depth * 4)}}`].join('\n');
+  } else {
+    // eslint-disable-next-line fp/no-mutation
+    newValue = value;
+  }
 
-const format = (changes, depth = 0) => {
-  const content = _.sortBy(Object.keys(changes)).reduce((acc, key) => {
-    const keyContent = changes[key].reduce((keyAcc, change) => {
-      const value = _.isObject(change.value) ? format(change.value, depth + 1) : change.value;
-      const contentLineIndent = indent.repeat(1 + (depth * 2));
-      const diff = `${contentLineIndent}${diffIcon(change.status)} ${key}: ${value}`;
+  return `${lineIndent(depth)}${icon} ${key}: ${newValue}`;
+};
 
-      return [...keyAcc, diff];
-    }, []);
+const format = (changes, depth = 1) => {
+  console.log(changes);
+  const sortedChanges = _.sortBy(changes, 'key');
+  const content = sortedChanges.flatMap((change) => {
+    const status = change.changeStatus;
+    switch (status) {
+      case 'unchanged':
+        return stringify(depth, ' ', change.key, change.value);
+      case 'added':
+        return stringify(depth, '+', change.key, change.value);
+      case 'removed':
+        return stringify(depth, '-', change.key, change.value);
+      case 'changed':
+        return [stringify(depth, '-', change.key, change.oldValue),
+          stringify(depth, '+', change.key, change.newValue)];
+      case 'nested':
+        return stringify(depth, ' ', change.key, format(change.children, depth + 1));
+      default:
+        throw new Error(`"${status}" change status is not supported`);
+    }
+  });
 
-    return [...acc, ...keyContent];
-  }, []);
-
-  return ['{', content.join('\n'), `${indent.repeat(depth * 2)}}`].join('\n');
+  return ['{', content.join('\n'), `${indentSymbol.repeat((depth - 1) * 4)}}`].join('\n');
 };
 
 export default format;
