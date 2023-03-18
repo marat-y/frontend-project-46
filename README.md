@@ -5,6 +5,11 @@
 
 gendiff.js - JSON and YML objects difference generator.
 
+### Installation
+- copy project: `git clone git@github.com:marat-y/frontend-project-46.git`
+- go to project folder
+- run `make install`
+
 ### Usage
 - [flat JSON](https://asciinema.org/a/532434)
 - [flat YML](https://asciinema.org/a/535609)
