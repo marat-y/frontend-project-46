@@ -23,7 +23,6 @@ const stringify = (depth, icon, key, value) => {
 };
 
 const format = (changes, depth = 1) => {
-  console.log(changes);
   const sortedChanges = _.sortBy(changes, 'key');
   const content = sortedChanges.flatMap((change) => {
     const status = change.changeStatus;
